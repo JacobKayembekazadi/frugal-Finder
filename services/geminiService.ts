@@ -1,7 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
 import { Place } from '../types';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
+// Only initialize GoogleGenAI if API key is available
+const ai = process.env.API_KEY ? new GoogleGenAI({ apiKey: process.env.API_KEY as string }) : null;
 
 const normalizeCategory = (category: string | undefined): string => {
     if (!category) return 'other';
@@ -51,8 +52,8 @@ const MOCK_PLACES: Place[] = [
 ];
 
 export const findPlaces = async (query: string, location: { lat: number; lng: number } | string): Promise<Place[]> => {
-    if (process.env.NODE_ENV === 'development' || !process.env.API_KEY) {
-        console.warn("Using mock data. API_KEY not found or in development mode.");
+    if (!ai || !process.env.API_KEY) {
+        console.warn("Using mock data. API_KEY not found or Gemini AI not initialized.");
         const center = typeof location === 'object' ? location : { lat: 43.6532, lng: -79.3832 };
         const updatedMockPlaces = MOCK_PLACES.map(place => ({
             ...place,
