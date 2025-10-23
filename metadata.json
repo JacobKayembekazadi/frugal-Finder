@@ -1,0 +1,7 @@
+{
+  "name": "Frugal Finder",
+  "description": "An application to help users find cheap alternatives for groceries, clothing, gas, and more. It uses geolocation to find nearby deals and displays them on a map.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
